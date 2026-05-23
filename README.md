@@ -32,8 +32,6 @@ NII LLMC が提供する [LLM-jp Playground](https://llm-jp-playground.apps.llmc
 |---|---|
 | 🏟️ **07. ベンチマーク選手権** (JCommonsenseQA / JMMLU / MGSM-ja / 対話 を実走し総合王者を決定) | [![Open 07](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F07_benchmark_olympiad.ipynb) |
 
-| 🏟️ **07. ベンチマーク選手権** (JCommonsenseQA / JMMLU / MGSM-ja / 対話 を実走し総合王者を決定) | [![Open 07](https://mybinder.org/badge_logo.svg)](https://jupyter.cs.rcos.nii.ac.jp/v1/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F07_benchmark_olympiad.ipynb) |
-
 ## 🔑 API キー設定 (必須)
 
 LLM-jp Playground 利用にはアカウント・トークンが必要です。
