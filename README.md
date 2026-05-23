@@ -17,7 +17,7 @@ NII LLMC が提供する [LLM-jp Playground](https://llm-jp-playground.apps.llmc
 | **01. API 基本** (動的 thinking 判別 / 内部 streaming / LaTeX レンダリング / 4 モデル比較) | [![Open 01](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F01_api_basics.ipynb) |
 | **02. GVR パイプライン** (Generator → Verifier → Reviser, multi-vote, trace 永続化) | [![Open 02](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F02_gvr_pipeline.ipynb) |
 
-### 🎮 遊びノートブック (NII メンバー共有用)
+### 🎮 遊びノートブック 
 
 | ノートブック | 起動リンク |
 |---|---|
@@ -34,7 +34,7 @@ NII LLMC が提供する [LLM-jp Playground](https://llm-jp-playground.apps.llmc
 
 ## 🔑 API キー設定 (必須)
 
-LLM-jp Playground は NII 内部リソースのため、利用にはアカウント・トークンが必要です。
+LLM-jp Playground 利用にはアカウント・トークンが必要です。
 
 Binder 起動後、ノートブック冒頭の `§1. 準備` セルが実行される**前に**、以下のセルを追加して実行してください:
 
@@ -127,7 +127,7 @@ NII メンバーへの共有用に、API 基本の理解を前提とした楽し
 - 📈 **Nejumi LLM Leaderboard との位置づけ** + Wilson 95% 信頼区間
 - デフォルトは ~10 分の軽量走行。`N_*` を増やすと本格評価 (各タスク 50-100 問で ±10% 以下に収束)
 
-> 🚀 **HuggingFace Hub 不使用**: データは全て GitHub の `raw.githubusercontent.com` (Fastly CDN) から直接取得します。HF Hub LFS の egress 詰まりを起こす環境 (NII 学内ネット等) で確実に動くよう設計。`datasets` パッケージは不要。
+> 🚀 **HuggingFace Hub 不使用**: データは全て GitHub の `raw.githubusercontent.com` (Fastly CDN) から直接取得します。HF Hub LFS の egress 詰まりを起こす環境 で確実に動くよう設計。`datasets` パッケージは不要。
 >
 > ⚠️ **ライセンス**: JMMLU は本実装で **CC BY-SA 4.0 の 4 科目** (世界宗教/初等数学/専門医学/哲学) のみ使用。NC_ND の科目 (日本史/世界史等) は意図的に除外。
 
