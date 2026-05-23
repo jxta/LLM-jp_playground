@@ -77,7 +77,7 @@ LLM-jp Playground API の基本的な使い方と落とし穴の回避策。
 
 ### 🎮 遊びノートブック
 
-NII メンバーへの共有用に、API 基本の理解を前提とした楽しい小実験を用意してあります。どれも 10 セル前後の短いノートブックで、`§1. セットアップ` を実行して `LLMJP_API_KEY` を設定すれば動きます。
+API 基本の理解を前提とした小実験を用意してあります。どれも 10 セル前後の短いノートブックで、`§1. セットアップ` を実行して `LLMJP_API_KEY` を設定すれば動きます。
 
 #### 🎴 `notebooks/03_haiku_battle.ipynb` — 俳句バトル + 匿名相互審査
 
@@ -154,7 +154,6 @@ https://llm-jp-playground.apps.llmc.nii.ac.jp/api/v1
 - **non-streaming パスでの reasoning ドロップ**: LLM-jp-4 系で `choices[0].message.content` が null になり `reasoning_content` も落ちる現象を Playground 側で確認。`01_api_basics.ipynb` は内部 streaming で回避済み
 - **モデルの thinking 挙動はモデル名から判断不能**: `-thinking` サフィックスは訓練系統名であり、ランタイム挙動を保証しない。プローブで実測すること
 - **mid-stream APIError**: LLM-jp 8b/32b の thinking モデルで時々発生。03〜07 の `chat()` はリトライ機構付き
-- **HuggingFace Hub の egress 不安定問題**: 07 では HF Hub を一切経由せず GitHub raw に切替。NII 学内ネットや帯域絞られている環境でも安定動作
 - LLM-jp-4 は英語で思考し日本語で final 出力する興味深い挙動を示す (多言語推論の研究対象)
 
 ## 📂 ファイル構成
