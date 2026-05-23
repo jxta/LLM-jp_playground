@@ -4,7 +4,7 @@ NII LLMC が提供する [LLM-jp Playground](https://llm-jp-playground.apps.llmc
 
 ## 🚀 即起動 (mybinder.org)
 
-ブラウザだけで実行できます。`openai` 等のパッケージをインストール済みの JupyterLab 環境が立ち上がります (初回ビルドは 1〜3 分、2 回目以降はキャッシュで数十秒)。
+ブラウザだけで実行できます。`openai` `datasets` 等のパッケージをインストール済みの JupyterLab 環境が立ち上がります (初回ビルドは 1〜3 分、2 回目以降はキャッシュで数十秒)。
 
 [![Binder - JupyterLab](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab)
 
@@ -25,6 +25,12 @@ NII LLMC が提供する [LLM-jp Playground](https://llm-jp-playground.apps.llmc
 | 🔗 **04. 連歌リレー** (4 モデルが交互に 5-7-5 / 7-7 を継ぎ、12 句の連歌を編む) | [![Open 04](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F04_renga_relay.ipynb) |
 | 📞 **05. 伝言ゲーム** (敬語 → ヤンキー → 古文 → 俳句 の文体変身チェーン + 復元テスト) | [![Open 05](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F05_telephone_game.ipynb) |
 | 🎭 **06. 絵文字マトリックス** (各モデルが自分+他 3 モデルを絵文字 5 つで表現、4×4 マトリックス) | [![Open 06](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F06_emoji_matrix.ipynb) |
+
+### 📊 ベンチマーク (本格評価)
+
+| ノートブック | 起動リンク |
+|---|---|
+| 🏟️ **07. ベンチマーク選手権** (JCommonsenseQA / JMMLU / MGSM-ja / 対話 を実走し総合王者を決定) | [![Open 07](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F07_benchmark_olympiad.ipynb) |
 
 ## 🔑 API キー設定 (必須)
 
@@ -103,6 +109,25 @@ NII メンバーへの共有用に、API 基本の理解を前提とした楽し
 - 4 モデル × 4 描写 = **4×4 マトリックス** を構築 (対角が自画像、🪞 で強調)
 - **観察ポイント**: 自己描写の控えめさ / 他者描写の大胆さ / 共通する絵文字 (集合知)
 - 結果はスクショ映えするので Slack で共有しやすい
+- **既知の現象**: LLM-jp 8b は **自己言及プロンプト** (「これはあなた自身です」) で thinking が暴走し APIError リトライ全失敗 → 部分絵文字でフォールバックされる。観察対象として面白い
+
+### 📊 ベンチマーク
+
+公開された日本語 LLM ベンチマークを実走させ、4 モデルの真の実力を測ります。Nejumi LLM Leaderboard / llm-jp-eval で使われているデータセットの「ミニ実走版」です。
+
+#### 🏟️ `notebooks/07_benchmark_olympiad.ipynb` — 4 モデル日本語LLMベンチマーク選手権
+
+- **🧠 JCommonsenseQA** (JGLUE, Kurihara+ NLP2022) — 5択常識推論 (`sbintuitions/JCommonsenseQA`)
+- **📚 JMMLU** (Yin+ 2024) — 4択学術知識、4 科目横断 (`nlp-waseda/JMMLU`)
+- **➗ MGSM-ja** (Shi+ 2022) — 数学CoT 問題、人手翻訳された GSM8K の日本語版 (`juletxara/mgsm`)
+- **💬 自由対話** — JaMT-Bench スタイル、4 モデル匿名相互審査 + Borda count
+- 🏆 **総合王者の表彰式** (ASCII 表彰台、メダル数、競技別内訳)
+- ⚡ **速度 vs 精度** 分析 (レイテンシ、1正答あたり秒数)
+- 🎬 **ハイライト/ローライト** (全員不正解の問題、1モデルだけ正解できた問題)
+- 📈 **Nejumi LLM Leaderboard との位置づけ** + Wilson 95% 信頼区間
+- デフォルトは ~10 分の軽量走行。`N_*` を増やすと本格評価 (各タスク 50-100 問で ±10% 以下に収束)
+
+> ⚠️ **ライセンス注意**: JMMLU は CC BY-NC-ND 4.0 (研究・評価目的のみ、商用不可)。出力データの再配布は各データセットの条件に従ってください。
 
 ## 🛠️ ローカル実行
 
@@ -126,6 +151,7 @@ https://llm-jp-playground.apps.llmc.nii.ac.jp/api/v1
 
 - **non-streaming パスでの reasoning ドロップ**: LLM-jp-4 系で `choices[0].message.content` が null になり `reasoning_content` も落ちる現象を Playground 側で確認。`01_api_basics.ipynb` は内部 streaming で回避済み
 - **モデルの thinking 挙動はモデル名から判断不能**: `-thinking` サフィックスは訓練系統名であり、ランタイム挙動を保証しない。プローブで実測すること
+- **mid-stream APIError**: LLM-jp 8b/32b の thinking モデルで時々発生。03〜07 の `chat()` はリトライ機構付き
 - LLM-jp-4 は英語で思考し日本語で final 出力する興味深い挙動を示す (多言語推論の研究対象)
 
 ## 📂 ファイル構成
@@ -134,18 +160,29 @@ https://llm-jp-playground.apps.llmc.nii.ac.jp/api/v1
 .
 ├── README.md
 ├── binder/
-│   ├── requirements.txt      # openai 等
+│   ├── requirements.txt      # openai, datasets 等
 │   └── runtime.txt           # Python 3.11
 └── notebooks/
-    ├── 01_api_basics.ipynb       # 🛠️ API 基本
-    ├── 02_gvr_pipeline.ipynb     # 🛠️ GVR パイプライン
-    ├── 03_haiku_battle.ipynb     # 🎴 俳句バトル
-    ├── 04_renga_relay.ipynb      # 🔗 連歌リレー
-    ├── 05_telephone_game.ipynb   # 📞 伝言ゲーム
-    └── 06_emoji_matrix.ipynb     # 🎭 絵文字マトリックス
+    ├── 01_api_basics.ipynb              # 🛠️ API 基本
+    ├── 02_gvr_pipeline.ipynb            # 🛠️ GVR パイプライン
+    ├── 03_haiku_battle.ipynb            # 🎴 俳句バトル
+    ├── 04_renga_relay.ipynb             # 🔗 連歌リレー
+    ├── 05_telephone_game.ipynb          # 📞 伝言ゲーム
+    ├── 06_emoji_matrix.ipynb            # 🎭 絵文字マトリックス
+    └── 07_benchmark_olympiad.ipynb      # 🏟️ ベンチマーク選手権
 ```
+
+## 参考文献 (07 ベンチマーク用)
+
+- 栗原健太郎, 河原大輔, 柴田知秀. **JGLUE: 日本語言語理解ベンチマーク**. 言語処理学会第28回年次大会, 2022.
+- Z. Yin, et al. **JMMLU: Japanese Massive Multitask Language Understanding Benchmark**. 2024.
+- F. Shi, M. Suzgun, et al. **Language Models are Multilingual Chain-of-Thought Reasoners**. arXiv:2210.03057, 2022.
+- L. Zheng, et al. **Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena**. NeurIPS 2023.
+- W&B Japan. **Nejumi LLM Leaderboard 4**. https://wandb.ai/wandb-japan/llm-leaderboard
+- LLM-jp. **llm-jp-eval**. https://github.com/llm-jp/llm-jp-eval
 
 ## ライセンス
 
 - ノートブック内コード: MIT
 - LLM-jp Playground 本体の利用: NII LLMC 規約準拠
+- ベンチマークデータセット: 各データセットのライセンスに従う (07 ノートブック冒頭に明記)
