@@ -10,11 +10,21 @@ NII LLMC が提供する [LLM-jp Playground](https://llm-jp-playground.apps.llmc
 
 特定のノートブックを直接開く:
 
+### 🛠️ ベース (技術解説 & パイプライン)
+
 | ノートブック | 起動リンク |
 |---|---|
 | **01. API 基本** (動的 thinking 判別 / 内部 streaming / LaTeX レンダリング / 4 モデル比較) | [![Open 01](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F01_api_basics.ipynb) |
 | **02. GVR パイプライン** (Generator → Verifier → Reviser, multi-vote, trace 永続化) | [![Open 02](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F02_gvr_pipeline.ipynb) |
-| 🎴 **03. AI 俳句バトル** (4 モデルが詠む → 匿名化 → 互いに採点 → 自作識別分析) | [![Open 03](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F03_haiku_battle.ipynb) |
+
+### 🎮 遊びノートブック (NII メンバー共有用)
+
+| ノートブック | 起動リンク |
+|---|---|
+| 🎴 **03. 俳句バトル** (4 モデルが詠む → 匿名化 → 互いに採点 → 自作識別分析) | [![Open 03](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F03_haiku_battle.ipynb) |
+| 🔗 **04. 連歌リレー** (4 モデルが交互に 5-7-5 / 7-7 を継ぎ、12 句の連歌を編む) | [![Open 04](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F04_renga_relay.ipynb) |
+| 📞 **05. 伝言ゲーム** (敬語 → ヤンキー → 古文 → 俳句 の文体変身チェーン + 復元テスト) | [![Open 05](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F05_telephone_game.ipynb) |
+| 🎭 **06. 絵文字マトリックス** (各モデルが自分+他 3 モデルを絵文字 5 つで表現、4×4 マトリックス) | [![Open 06](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab%2Ftree%2Fnotebooks%2F06_emoji_matrix.ipynb) |
 
 ## 🔑 API キー設定 (必須)
 
@@ -33,7 +43,9 @@ os.environ["LLMJP_API_KEY"] = "ここに自分のトークン"
 
 ## 📚 ノートブック構成
 
-### `notebooks/01_api_basics.ipynb`
+### 🛠️ ベース
+
+#### `notebooks/01_api_basics.ipynb`
 
 LLM-jp Playground API の基本的な使い方と落とし穴の回避策。
 
@@ -45,7 +57,7 @@ LLM-jp Playground API の基本的な使い方と落とし穴の回避策。
 - 4 モデル横並び比較 (LLM-jp-4 8B, 32B-A3B, Qwen3.6-27B, Gemma-4-31B-it)
 - パラメータ実験 (temperature, seed) と thinking ON/OFF 比較
 
-### `notebooks/02_gvr_pipeline.ipynb`
+#### `notebooks/02_gvr_pipeline.ipynb`
 
 研究タスク向けの **Generator-Verifier-Reviser パイプライン**プロトタイプ。
 
@@ -57,16 +69,40 @@ LLM-jp Playground API の基本的な使い方と落とし穴の回避策。
 - 数学命題判定 / Julia コードレビュー / Chebyshev bias 論述などの実例
 - Claude / Gemini クライアント生成スタブ
 
-### 🎴 `notebooks/03_haiku_battle.ipynb`
+### 🎮 遊びノートブック
 
-**遊びノートブック** — 4 モデルが同じお題で俳句を 1 句ずつ詠み、匿名化してから互いに採点しあう小さなトーナメント。短く (12 セル) 楽しめます。
+NII メンバーへの共有用に、API 基本の理解を前提とした楽しい小実験を用意してあります。どれも 10 セル前後の短いノートブックで、`§1. セットアップ` を実行して `LLMJP_API_KEY` を設定すれば動きます。
 
-- 🌸🗻🐉💎 4 モデル全員が「深夜の研究室、コーヒーと計算機」で詠む
+#### 🎴 `notebooks/03_haiku_battle.ipynb` — 俳句バトル + 匿名相互審査
+
+- 🌸🗻🐉💎 4 モデル全員が同じお題で詠む
 - 🎭 A/B/C/D に匿名化シャッフル
 - 🧑‍⚖️ 4 モデル自身が審査員として呼び戻され、1〜4 位の順位を付ける
 - 🏆 Borda count で総合王者発表
 - 🪞 「自分の作品を何位に置いたか」を分析 (😎 自画自賛 / 🥶 自作に最下位)
-- 教育的副産物: Verifier に同モデルを使う妥当性 (自作識別はほぼ不可能) の傍証
+- **副産物**: Verifier に同モデルを使う妥当性 (自作識別はほぼ不可能) の傍証
+
+#### 🔗 `notebooks/04_renga_relay.ipynb` — 連歌リレー (12 句)
+
+- 4 モデルを順に巡回させ、5-7-5 と 7-7 を交互に **12 句の連歌**を編む
+- 各モデルは「**直前の句しか見ない**」という連歌の精神に倣う
+- 最後に 1 モデルが全体を講評
+- **観察ポイント**: 何句目で連想が飛躍するか / 各モデルの作風 (派手 vs 渋い)
+- `03_haiku_battle` の並列+審査と対をなす **逐次協創**の実験
+
+#### 📞 `notebooks/05_telephone_game.ipynb` — 文体の変身チェーン
+
+- 1 文を **敬語 → ヤンキー語 → 古文 → 俳句** の順に変換していく伝言ゲーム
+- 各モデルは前のモデルの出力しか見ない (原文は見えない)
+- 最後に別モデルが「最終形の俳句から原文を復元」を試みる
+- **観察ポイント**: 4 段階を経て意味はどれくらい残るか / 17 音まで圧縮した後の復元率
+
+#### 🎭 `notebooks/06_emoji_matrix.ipynb` — 絵文字パーソナリティ・マトリックス
+
+- 各モデルに「自分 + 他 3 モデル」を **絵文字 5 つずつ** で表現させる
+- 4 モデル × 4 描写 = **4×4 マトリックス** を構築 (対角が自画像、🪞 で強調)
+- **観察ポイント**: 自己描写の控えめさ / 他者描写の大胆さ / 共通する絵文字 (集合知)
+- 結果はスクショ映えするので Slack で共有しやすい
 
 ## 🛠️ ローカル実行
 
@@ -101,9 +137,12 @@ https://llm-jp-playground.apps.llmc.nii.ac.jp/api/v1
 │   ├── requirements.txt      # openai 等
 │   └── runtime.txt           # Python 3.11
 └── notebooks/
-    ├── 01_api_basics.ipynb
-    ├── 02_gvr_pipeline.ipynb
-    └── 03_haiku_battle.ipynb
+    ├── 01_api_basics.ipynb       # 🛠️ API 基本
+    ├── 02_gvr_pipeline.ipynb     # 🛠️ GVR パイプライン
+    ├── 03_haiku_battle.ipynb     # 🎴 俳句バトル
+    ├── 04_renga_relay.ipynb      # 🔗 連歌リレー
+    ├── 05_telephone_game.ipynb   # 📞 伝言ゲーム
+    └── 06_emoji_matrix.ipynb     # 🎭 絵文字マトリックス
 ```
 
 ## ライセンス
