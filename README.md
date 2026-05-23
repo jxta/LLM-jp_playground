@@ -4,7 +4,7 @@ NII LLMC が提供する [LLM-jp Playground](https://llm-jp-playground.apps.llmc
 
 ## 🚀 即起動 (mybinder.org)
 
-ブラウザだけで実行できます。`openai` `datasets` 等のパッケージをインストール済みの JupyterLab 環境が立ち上がります (初回ビルドは 1〜3 分、2 回目以降はキャッシュで数十秒)。
+ブラウザだけで実行できます。`openai` 等のパッケージをインストール済みの JupyterLab 環境が立ち上がります (初回ビルドは 1〜3 分、2 回目以降はキャッシュで数十秒)。
 
 [![Binder - JupyterLab](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/jxta/LLM-jp_playground/main?urlpath=lab)
 
@@ -117,9 +117,9 @@ NII メンバーへの共有用に、API 基本の理解を前提とした楽し
 
 #### 🏟️ `notebooks/07_benchmark_olympiad.ipynb` — 4 モデル日本語LLMベンチマーク選手権
 
-- **🧠 JCommonsenseQA** (JGLUE, Kurihara+ NLP2022) — 5択常識推論 (`sbintuitions/JCommonsenseQA`)
-- **📚 JMMLU** (Yin+ 2024) — 4択学術知識、4 科目横断 (`nlp-waseda/JMMLU`)
-- **➗ MGSM-ja** (Shi+ 2022) — 数学CoT 問題、人手翻訳された GSM8K の日本語版 (`juletxara/mgsm`)
+- **🧠 JCommonsenseQA** (JGLUE, Kurihara+ NLP2022) — 5択常識推論 (JGLUE GitHub 原本)
+- **📚 JMMLU** (Yin+ 2024) — 4択学術知識、4 科目横断 (`nlp-waseda/JMMLU` GitHub 原本: 世界宗教/初等数学/専門医学/哲学)
+- **➗ MGSM-ja** (Shi+ 2022) — 数学CoT 問題、人手翻訳された GSM8K の日本語版 (google-research/url-nlp GitHub 原本)
 - **💬 自由対話** — JaMT-Bench スタイル、4 モデル匿名相互審査 + Borda count
 - 🏆 **総合王者の表彰式** (ASCII 表彰台、メダル数、競技別内訳)
 - ⚡ **速度 vs 精度** 分析 (レイテンシ、1正答あたり秒数)
@@ -127,7 +127,9 @@ NII メンバーへの共有用に、API 基本の理解を前提とした楽し
 - 📈 **Nejumi LLM Leaderboard との位置づけ** + Wilson 95% 信頼区間
 - デフォルトは ~10 分の軽量走行。`N_*` を増やすと本格評価 (各タスク 50-100 問で ±10% 以下に収束)
 
-> ⚠️ **ライセンス注意**: JMMLU は CC BY-NC-ND 4.0 (研究・評価目的のみ、商用不可)。出力データの再配布は各データセットの条件に従ってください。
+> 🚀 **HuggingFace Hub 不使用**: データは全て GitHub の `raw.githubusercontent.com` (Fastly CDN) から直接取得します。HF Hub LFS の egress 詰まりを起こす環境 (NII 学内ネット等) で確実に動くよう設計。`datasets` パッケージは不要。
+>
+> ⚠️ **ライセンス**: JMMLU は本実装で **CC BY-SA 4.0 の 4 科目** (世界宗教/初等数学/専門医学/哲学) のみ使用。NC_ND の科目 (日本史/世界史等) は意図的に除外。
 
 ## 🛠️ ローカル実行
 
@@ -152,6 +154,7 @@ https://llm-jp-playground.apps.llmc.nii.ac.jp/api/v1
 - **non-streaming パスでの reasoning ドロップ**: LLM-jp-4 系で `choices[0].message.content` が null になり `reasoning_content` も落ちる現象を Playground 側で確認。`01_api_basics.ipynb` は内部 streaming で回避済み
 - **モデルの thinking 挙動はモデル名から判断不能**: `-thinking` サフィックスは訓練系統名であり、ランタイム挙動を保証しない。プローブで実測すること
 - **mid-stream APIError**: LLM-jp 8b/32b の thinking モデルで時々発生。03〜07 の `chat()` はリトライ機構付き
+- **HuggingFace Hub の egress 不安定問題**: 07 では HF Hub を一切経由せず GitHub raw に切替。NII 学内ネットや帯域絞られている環境でも安定動作
 - LLM-jp-4 は英語で思考し日本語で final 出力する興味深い挙動を示す (多言語推論の研究対象)
 
 ## 📂 ファイル構成
@@ -160,7 +163,7 @@ https://llm-jp-playground.apps.llmc.nii.ac.jp/api/v1
 .
 ├── README.md
 ├── binder/
-│   ├── requirements.txt      # openai, datasets 等
+│   ├── requirements.txt      # openai 等 (stdlib のみで datasets 不要)
 │   └── runtime.txt           # Python 3.11
 └── notebooks/
     ├── 01_api_basics.ipynb              # 🛠️ API 基本
@@ -174,9 +177,9 @@ https://llm-jp-playground.apps.llmc.nii.ac.jp/api/v1
 
 ## 参考文献 (07 ベンチマーク用)
 
-- 栗原健太郎, 河原大輔, 柴田知秀. **JGLUE: 日本語言語理解ベンチマーク**. 言語処理学会第28回年次大会, 2022.
-- Z. Yin, et al. **JMMLU: Japanese Massive Multitask Language Understanding Benchmark**. 2024.
-- F. Shi, M. Suzgun, et al. **Language Models are Multilingual Chain-of-Thought Reasoners**. arXiv:2210.03057, 2022.
+- 栗原健太郎, 河原大輔, 柴田知秀. **JGLUE: 日本語言語理解ベンチマーク**. 言語処理学会第28回年次大会, 2022. https://github.com/yahoojapan/JGLUE
+- Z. Yin, et al. **JMMLU: Japanese Massive Multitask Language Understanding Benchmark**. 2024. https://github.com/nlp-waseda/JMMLU
+- F. Shi, M. Suzgun, et al. **Language Models are Multilingual Chain-of-Thought Reasoners**. arXiv:2210.03057, 2022. https://github.com/google-research/url-nlp
 - L. Zheng, et al. **Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena**. NeurIPS 2023.
 - W&B Japan. **Nejumi LLM Leaderboard 4**. https://wandb.ai/wandb-japan/llm-leaderboard
 - LLM-jp. **llm-jp-eval**. https://github.com/llm-jp/llm-jp-eval
